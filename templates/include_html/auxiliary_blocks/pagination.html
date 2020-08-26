@@ -1,0 +1,27 @@
+{% if is_paginated  %}
+    <nav aria-label="...">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link page-style" href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                </li>
+            {% endif %}
+            {% for number in page_obj.paginator.page_range %}
+                {% if number == page_obj.number %}
+                    <li class="page-item ">
+                        <a class="page-link page-style page-active" href="?page={{ number }}">{{ number }}</a>
+                    </li>
+                {% elif number > page_obj.number|add:-3 and number < page_obj.number|add:3 %}
+                    <li class="page-item">
+                        <a class="page-link page-style" href="?page={{ number }}">{{ number }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link page-style" href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}

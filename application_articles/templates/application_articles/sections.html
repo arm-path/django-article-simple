@@ -1,0 +1,16 @@
+{% extends 'application_articles/base.html' %}
+{% block title %} {{ get_section_view.title }} {% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+            {% block navigation_content %}
+                {% include 'include_html/content_navigation.html' %}
+            {% endblock %}
+        </div>
+        <div class="col-md-9">
+            {% block base_content %}
+                {{ block.super }}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

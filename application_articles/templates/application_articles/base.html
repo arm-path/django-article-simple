@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% block base_content %}
+    {% for item_article in articles %}
+        {% comment %} {{ string_simple }}{% endcomment %}
+        <div class="card text-left mb-3 mt-3">
+            <div class="card-header">
+                <a class="btn btn-outline-secondary {% if active_link_section %} active {% endif %}"
+                   href="{{item_article.get_section_url}}">
+                    {{ item_article.section.title }}
+                </a>
+                <a class="btn btn-outline-secondary {% if active_link_category %} active {% endif %}"
+                   href="{{item_article.get_category_url}}">
+                    {{ item_article.category.title }}
+                </a>
+                <a class="btn btn-outline-secondary {% if active_link_subject %} active {% endif %}"
+                   href="{{item_article.get_subject_url}}">
+                    {{ item_article.subject.title }}
+                </a>
+            </div>
+            <div class="media">
+                {% if item_article.image_publication %}
+                    <img class="mt-3 ml-3 mb-3 " src="{{ item_article.image_publication.url }}" alt="" width=250px>
+                {% endif %}
+                <div class="media-body">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item_article.title }}</h5>
+                        <p class="card-text">{{ item_article.content_description }}</p>
+                        <a href="{{item_article.get_absolute_url}}"
+                           class="btn btn-secondary">Читать продолжение ...</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                {{ item_article.publication_date }}
+            </div>
+        </div>
+    {% endfor %}
+        {% include 'include_html/auxiliary_blocks/pagination.html'%}
+{% endblock %}

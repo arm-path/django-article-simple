@@ -1,0 +1,13 @@
+{% block navigation_content %}
+    <div class="list-group mb-3 mt-3">
+        <h5 class="list-group-item list-group-item-action list-group-item-secondary mb-0">Добавление</h5>
+        <a class="list-group-item list-group-item-action list-group-item-secondary {% if active_link_article %} active {% endif %}"
+            href="{% url 'add_article' %}">Статья</a>
+        <a class="list-group-item list-group-item-action list-group-item-secondary {% if active_link_category %} active {% endif %}"
+            href="{% url 'add_category' %}">Категория</a>
+        <a class="list-group-item list-group-item-action list-group-item-secondary {% if active_link_subject %} active {% endif %}"
+            href="{% url 'add_subject' %}">Тема</a>
+        <a class="list-group-item list-group-item-action list-group-item-secondary {% if active_link_section %} active {% endif %}"
+            href="{% url 'add_section' %}">Раздел</a>
+    </div>
+{% endblock %}

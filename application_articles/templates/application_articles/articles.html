@@ -1,0 +1,29 @@
+{% extends "application_articles/base.html " %}
+{% block title %}
+    Статья: {{ articles.title }}
+{% endblock %}
+
+{% block base_content %}
+    <div class="card text-left mb-3 mt-3">
+        <div class="card-header">
+            <a class="btn btn-outline-secondary"
+               href="{{articles.get_subject_url}}">
+                НАЗАД
+            </a>
+        </div>
+        <div class="media">
+            {% if articles.image_publication %}
+                <img class="mt-3 ml-3 mb-3 " src="{{ articles.image_publication.url }}" alt="" width=250px>
+            {% endif %}
+            <div class="media-body">
+                <div class="card-body">
+                    <h5 class="card-title">{{ articles.title }}</h5>
+                    <p class="card-text">{{ articles.content|safe }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            {{ articles.publication_date }}
+        </div>
+    </div>
+{% endblock %}

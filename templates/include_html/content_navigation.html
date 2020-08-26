@@ -1,0 +1,83 @@
+{% block navigation_content %}
+
+    {% load base_tags_articles %}
+    {% get_category active_section=get_section_view as categories %}
+    {% get_subjects active_section=get_section_view active_category=get_category_view as subjects %}
+
+    {% if active_link_category %}
+        {% if active_link_subject %}
+            <div class="list-group mb-3 mt-3">
+                <h5 class="list-group-item list-group-item-action list-group-item-secondary mb-0">Темы</h5>
+                {% for item_subject in subjects %}
+                    {% for item_article in articles_sections_categories %}
+                        {% if item_subject.title == item_article.subject.title %}
+                            {% ifchanged %}
+                                {% if get_subject_view == item_subject %}
+                                    <a href="{{item_article.get_subject_url}}" class="list-group-item list-group-item-action list-group-item-secondary active">
+                                        {{ item_subject.title }}
+                                        <span class="badge badge-secondary badge-pill">  
+                                            {{ item_subject.cnt }} 
+                                        </span>
+                                    </a>
+                                {% else %}
+                                    <a href="{{item_article.get_subject_url}}" class="list-group-item list-group-item-action list-group-item-secondary">
+                                        {{ item_subject.title }} 
+                                        <span class="badge badge-secondary badge-pill">  
+                                            {{ item_subject.cnt }} 
+                                        </span>
+                                    </a>
+                                {% endif %}
+                            {% endifchanged %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+    {% else %}
+            <div class="list-group mb-3 mt-3">
+                <h5 class="list-group-item list-group-item-action list-group-item-secondary mb-0">Темы</h5>
+                {% for item_subject in subjects %}
+                    {% for item_article in articles %}
+                        {% if item_subject.title == item_article.subject.title %}
+                            {% ifchanged %}
+                                <a href="{{item_article.get_subject_url}}"class="list-group-item list-group-item-action list-group-item-secondary">
+                                    {{ item_subject.title }} 
+                                    <span class="badge badge-secondary badge-pill">  
+                                        {{ item_subject.cnt }} 
+                                    </span>
+                                </a>
+                            {% endifchanged %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="list-group mb-3 mt-3">
+        <h5 class="list-group-item list-group-item-action list-group-item-secondary mb-0">Категории</h5>
+        {% for item_category in categories %}
+            {% for item_article in articles_sections %}
+                {% if item_category.title == item_article.category.title %}
+                    {% ifchanged %}
+                        {% if get_category_view == item_category %}
+                            <a href="{{item_article.get_category_url}}" class="list-group-item list-group-item-action list-group-item-secondary active">
+                                {{ item_category.title }} 
+                                <span class="badge badge-light badge-pill"> 
+                                    {{ item_category.cnt }} 
+                                </span>
+                            </a>
+                        {% else %}
+                            <a href="{{item_article.get_category_url}}" class="list-group-item list-group-item-action list-group-item-secondary">
+                                {{ item_category.title }} 
+                                <span class="badge badge-secondary badge-pill">
+                                    {{ item_category.cnt }} 
+                                </span>
+                            </a>
+                        {% endif %}
+                    {% endifchanged %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

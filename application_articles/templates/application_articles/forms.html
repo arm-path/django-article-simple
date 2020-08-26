@@ -1,0 +1,37 @@
+{% extends "application_articles/sections.html" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block navigation_content %}
+{% include 'include_html/form_content_navigation.html' %}
+{% endblock %}
+
+{% block base_content %}
+<div mt-3 block-form>
+    <div class="form_block card text-left mb-3 mt-3">
+        <div class="card-header">
+            <h3 class="mb-3 ">{{ title }}</h3>
+        </div>
+        <form
+            action="{% if active_link_section %}{% url 'add_section' %}{% elif active_link_subject %}{% url 'add_subject' %}{% elif active_link_category %}{% url 'add_category' %}{% elif active_link_article %}{% url 'add_article' %}{% endif %}"
+            enctype="multipart/form-data" , method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="card-body">
+                    {% for elements in form %}
+                    <p>
+                        <label class="form_label" for="{{ elements.id_for_label }}">{{ elements.label }}</label>
+                        {{ elements }}
+                        {{ elements.errors }}
+                    </p>
+                    {% endfor %}
+
+                </div>
+                <div class="card-footer text-muted">
+                    <button type="submit" class="btn btn-secondary btn-lg btn-block ">Добавить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
