@@ -3,7 +3,7 @@ from django.urls import reverse
 
 
 class Section(models.Model):
-    """Модель разделов"""
+    """ Модель разделов """
     title = models.CharField(max_length=69, verbose_name="Название")
     slug = models.SlugField(max_length=69, unique=True, verbose_name="URL")
 
@@ -20,7 +20,7 @@ class Section(models.Model):
 
 
 class Category(models.Model):
-    """Модель категорий"""
+    """ Модель категорий """
     title = models.CharField(max_length=69, verbose_name="Название")
     slug = models.SlugField(max_length=69, unique=True, verbose_name="URL")
 
@@ -34,7 +34,7 @@ class Category(models.Model):
 
 
 class Subject(models.Model):
-    """Модель тем"""
+    """ Модель тем """
     title = models.CharField(max_length=69, verbose_name="Название")
     slug = models.SlugField(max_length=69, unique=True, verbose_name='URL')
 
@@ -48,7 +48,7 @@ class Subject(models.Model):
 
 
 class Article(models.Model):
-    """Модель статей"""
+    """ Модель статей """
     title = models.CharField(max_length=69, verbose_name="Заголовок")
     slug = models.SlugField(max_length=69, unique=True, verbose_name='URL')
     section = models.ForeignKey(
@@ -72,16 +72,26 @@ class Article(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('articles', kwargs={'section_slug': self.section.slug, 'category_slug': self.category.slug, 'subject_slug': self.subject.slug, 'slug': self.slug})
+        return reverse('articles',
+                       kwargs={'section_slug': self.section.slug,
+                               'category_slug': self.category.slug,
+                               'subject_slug': self.subject.slug,
+                               'slug': self.slug})
 
     def get_subject_url(self):
-        return reverse('subjects', kwargs={'section_slug': self.section.slug, 'category_slug': self.category.slug, 'slug': self.subject.slug})
-    
+        return reverse('subjects',
+                       kwargs={'section_slug': self.section.slug,
+                               'category_slug': self.category.slug,
+                               'slug': self.subject.slug})
+
     def get_category_url(self):
-        return reverse('categories', kwargs={'section_slug': self.section.slug, 'slug': self.category.slug})
-    
+        return reverse('categories',
+                       kwargs={'section_slug': self.section.slug,
+                               'slug': self.category.slug})
+
     def get_section_url(self):
-        return reverse('sections', kwargs={'slug': self.section.slug})
+        return reverse('sections',
+                       kwargs={'slug': self.section.slug})
 
     class Meta:
         verbose_name = "Статья"

@@ -13,7 +13,7 @@ class SectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug']
     list_display_links = ['title']
     search_fields = ['title']
-    prepopulated_fields  = {'slug': ('title',)}
+    prepopulated_fields = {'slug': ('title',)}
 
 
 @admin.register(Category)

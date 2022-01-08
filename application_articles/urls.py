@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import SectionList, CategoryList, SubjectList, ArticleList, ArticleDetail
 from .views import SectionCreate, CategoryCreate, SubjectCreate, ArticleCreate
+from .views import SectionList, CategoryList, SubjectList, ArticleList, ArticleDetail
 from .views import registration, authorization, logout_view, feedback
 
 urlpatterns = [
@@ -20,7 +20,5 @@ urlpatterns = [
     path('authorization/', authorization, name="authorization"),
     path('logout/', logout_view, name="logout_view"),
     path('feedback/', feedback, name="feedback"),
-
-
 
 ]

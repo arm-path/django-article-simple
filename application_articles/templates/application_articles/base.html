@@ -6,15 +6,15 @@
         <div class="card text-left mb-3 mt-3">
             <div class="card-header">
                 <a class="btn btn-outline-secondary {% if active_link_section %} active {% endif %}"
-                   href="{{item_article.get_section_url}}">
+                   href="{{ item_article.get_section_url }}">
                     {{ item_article.section.title }}
                 </a>
                 <a class="btn btn-outline-secondary {% if active_link_category %} active {% endif %}"
-                   href="{{item_article.get_category_url}}">
+                   href="{{ item_article.get_category_url }}">
                     {{ item_article.category.title }}
                 </a>
                 <a class="btn btn-outline-secondary {% if active_link_subject %} active {% endif %}"
-                   href="{{item_article.get_subject_url}}">
+                   href="{{ item_article.get_subject_url }}">
                     {{ item_article.subject.title }}
                 </a>
             </div>
@@ -26,7 +26,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ item_article.title }}</h5>
                         <p class="card-text">{{ item_article.content_description }}</p>
-                        <a href="{{item_article.get_absolute_url}}"
+                        <a href="{{ item_article.get_absolute_url }}"
                            class="btn btn-secondary">Читать продолжение ...</a>
                     </div>
                 </div>
@@ -36,5 +36,5 @@
             </div>
         </div>
     {% endfor %}
-        {% include 'include_html/auxiliary_blocks/pagination.html'%}
+    {% include 'include_html/auxiliary_blocks/pagination.html' %}
 {% endblock %}

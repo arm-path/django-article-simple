@@ -1,9 +1,9 @@
 import re
 
 from django import forms
-from django.core.validators import ValidationError
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.core.validators import ValidationError
 
 from captcha.fields import CaptchaField
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
@@ -12,7 +12,8 @@ from .models import Article, Category, Section, Subject
 
 
 class SectionForm(forms.ModelForm):
-    """Форма создания и редактирования разделов"""
+    """ Форма создания и редактирования разделов """
+
     class Meta:
         model = Section
         fields = ['title']
@@ -21,7 +22,7 @@ class SectionForm(forms.ModelForm):
         }
 
     def clean_title(self):
-        """Валидация поля title"""
+        """ Валидация поля title """
         title = self.cleaned_data['title']
         if re.match(r'\d', title):
             raise ValidationError('Название не должено начинаться с цифры')
@@ -29,6 +30,8 @@ class SectionForm(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
+    """ Форма создания и редактирования категорий """
+
     class Meta:
         model = Category
         fields = ['title']
@@ -44,7 +47,8 @@ class CategoryForm(forms.ModelForm):
 
 
 class SubjectForm(forms.ModelForm):
-    """Форма создания и редактирования тем"""
+    """ Форма создания и редактирования тем """
+
     class Meta:
         model = Subject
         fields = ['title']
@@ -53,7 +57,7 @@ class SubjectForm(forms.ModelForm):
         }
 
     def clean_title(self):
-        """Валидация поля title"""
+        """ Валидация поля title """
         title = self.cleaned_data['title']
         if re.match(r'\d', title):
             raise ValidationError('Название не должено начинаться с цифры')
@@ -61,11 +65,11 @@ class SubjectForm(forms.ModelForm):
 
 
 class ArticleForm(forms.ModelForm):
-    """Форма создания и редактирования статей"""
+    """ Форма создания и редактирования статей """
+
     class Meta:
         model = Article
-        fields = ['title', 'section', 'category', 'subject',
-                  'content_description', 'content', 'image_publication']
+        fields = ['title', 'section', 'category', 'subject', 'content_description', 'content', 'image_publication']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control form_input_shadow'}),
             'category': forms.Select(attrs={'class': 'form-control form_input_shadow'}),
@@ -76,7 +80,7 @@ class ArticleForm(forms.ModelForm):
         }
 
     def clean_title(self):
-        """Валидация поля title"""
+        """ Валидация поля title """
         title = self.cleaned_data['title']
         if re.match(r'\d', title):
             raise ValidationError('Название не должено начинаться с цифры')
@@ -84,15 +88,19 @@ class ArticleForm(forms.ModelForm):
 
 
 class UserRegistration(UserCreationForm):
-    """Форма регистрации пользователя"""
+    """ Форма регистрации пользователя """
     username = forms.CharField(max_length=150, label='Имя пользователя',
-                               widget=forms.TextInput( attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
+                               widget=forms.TextInput(
+                                   attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
     email = forms.EmailField(max_length=150, label="Электронная почта",
-                             widget=forms.EmailInput(attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
+                             widget=forms.EmailInput(
+                                 attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
     password1 = forms.CharField(max_length=150, label='Пароль',
-                                widget=forms.PasswordInput( attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
+                                widget=forms.PasswordInput(
+                                    attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
     password2 = forms.CharField(max_length=150, label='Подтверждение пароля',
-                                widget=forms.PasswordInput( attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
+                                widget=forms.PasswordInput(
+                                    attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
 
     class Meta:
         model = User
@@ -100,7 +108,7 @@ class UserRegistration(UserCreationForm):
 
 
 class UserAuthorization(AuthenticationForm):
-    """Форма авторизации пользователя"""
+    """ Форма авторизации пользователя """
     username = forms.CharField(max_length=150, label="Имя пользователя", widget=forms.TextInput(
         attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
     password = forms.CharField(max_length=150, label='Пароль', widget=forms.PasswordInput(
@@ -108,7 +116,7 @@ class UserAuthorization(AuthenticationForm):
 
 
 class Feedback(forms.Form):
-    """Форма обратной связи"""
+    """ Форма обратной связи """
     title = forms.CharField(max_length=150, label='Заголовок', widget=forms.TextInput(
         attrs={'class': 'form-control form_input_shadow', 'autocomplete': None}))
     content = forms.CharField(max_length=150, label='Текст письма', widget=forms.Textarea(

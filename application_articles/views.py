@@ -1,23 +1,20 @@
-from slugify import slugify
-
-from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
-from django.db.models import Count
-from django.views.generic import ListView, DetailView, CreateView
-from django.core.mail import send_mail
-from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.messages.views import SuccessMessageMixin
+from django.core.mail import send_mail
+from django.db.models import Count
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
+from slugify import slugify
 
-from .models import Section, Category, Subject, Article
 from .forms import SectionForm, CategoryForm, SubjectForm, ArticleForm, UserRegistration, UserAuthorization, Feedback
+from .models import Section, Category, Subject, Article
 
 
 class SectionList(ListView):
-    """Представление разделов"""
+    """ Представление разделов """
     model = Article
     template_name = 'application_articles/sections.html'
     context_object_name = 'articles'
@@ -25,10 +22,9 @@ class SectionList(ListView):
     allow_empty = False
 
     def get_context_data(self, object_list=None, *args, **kwargs):
-        """Добавление дополнительного контекста к представлению разделов"""
+        """ Добавление дополнительного контекста к представлению разделов """
         context = super().get_context_data(**kwargs)
-        context['get_section_view'] = Section.objects.annotate(cnt=Count('article')).get(
-            slug=self.kwargs['slug'])
+        context['get_section_view'] = Section.objects.annotate(cnt=Count('article')).get(slug=self.kwargs['slug'])
         context['articles_sections'] = context['articles']
         context['active_link_section'] = 'active_link'
         return context
@@ -36,7 +32,9 @@ class SectionList(ListView):
     def get_queryset(self):
         """Получение статей раздела"""
         return Article.objects.filter(
-            section_id=Section.objects.get(slug=self.kwargs['slug']), posted_by=True).select_related('section', 'category', 'subject', )
+            section_id=Section.objects.get(slug=self.kwargs['slug']),
+            posted_by=True
+        ).select_related('section', 'category', 'subject', )
 
 
 class CategoryList(ListView):
@@ -47,15 +45,13 @@ class CategoryList(ListView):
     paginate_by = 3
     allow_empty = False
 
-    def get_context_data(self,  object_list=None, *args, **kwargs):
+    def get_context_data(self, object_list=None, *args, **kwargs):
         """Добавление дополнительного контекста к представлению категорий"""
         context = super().get_context_data(**kwargs)
-        context['get_section_view'] = Section.objects.get(
-            slug=self.kwargs['section_slug'])
-        context['get_category_view'] = Category.objects.get(
-            slug=self.kwargs['slug'])
-        context['articles_sections'] = Article.objects.filter(
-            section_id=context['get_section_view']).select_related('section', 'category')
+        context['get_section_view'] = Section.objects.get(slug=self.kwargs['section_slug'])
+        context['get_category_view'] = Category.objects.get(slug=self.kwargs['slug'])
+        context['articles_sections'] = Article.objects.filter(section_id=context['get_section_view']
+                                                              ).select_related('section', 'category')
         context['active_link_section'] = 'active_link'
         context['active_link_category'] = 'active_link'
 
@@ -63,8 +59,10 @@ class CategoryList(ListView):
 
     def get_queryset(self):
         """Получение статей раздела и категорий"""
-        return Article.objects.filter(section_id=Section.objects.get(slug=self.kwargs['section_slug']),
-                                      category_id=Category.objects.get(slug=self.kwargs['slug']), posted_by=True).select_related('section', 'category', 'subject')
+        return Article.objects.filter(
+            section_id=Section.objects.get(slug=self.kwargs['section_slug']),
+            category_id=Category.objects.get(slug=self.kwargs['slug']), posted_by=True
+        ).select_related('section', 'category', 'subject')
 
 
 class SubjectList(ListView):
@@ -78,16 +76,16 @@ class SubjectList(ListView):
     def get_context_data(self, object_list=None, *args, **kwargs):
         """Добавление дополнительного контекста к представлению тем"""
         context = super().get_context_data(**kwargs)
-        context['get_section_view'] = Section.objects.get(
-            slug=self.kwargs['section_slug'])
-        context['get_category_view'] = Category.objects.get(
-            slug=self.kwargs['category_slug'])
-        context['get_subject_view'] = Subject.objects.get(
-            slug=self.kwargs['slug'])
-        context['articles_sections'] = Article.objects.filter(
-            section_id=context['get_section_view']).select_related('section', 'category')
+        context['get_section_view'] = Section.objects.get(slug=self.kwargs['section_slug'])
+        context['get_category_view'] = Category.objects.get(slug=self.kwargs['category_slug'])
+        context['get_subject_view'] = Subject.objects.get(slug=self.kwargs['slug'])
+        context['articles_sections'] = Article.objects.filter(section_id=context['get_section_view']
+                                                              ).select_related('section', 'category')
         context['articles_sections_categories'] = Article.objects.filter(section_id=context['get_section_view'],
-                                                                         category_id=context['get_category_view'], posted_by=True).select_related('section', 'category', 'subject')
+                                                                         category_id=context['get_category_view'],
+                                                                         posted_by=True
+                                                                         ).select_related('section', 'category',
+                                                                                          'subject')
         context['active_link_section'] = 'active_link'
         context['active_link_subject'] = 'active_link'
         context['active_link_category'] = 'active_link'
@@ -96,7 +94,10 @@ class SubjectList(ListView):
     def get_queryset(self):
         """Получение статей раздела, категорий и тем"""
         return Article.objects.filter(section_id=Section.objects.get(slug=self.kwargs['section_slug']),
-                                      category_id=Category.objects.get(slug=self.kwargs['category_slug']), subject_id=Subject.objects.get(slug=self.kwargs['slug']), posted_by=True).select_related('section', 'category', 'subject')
+                                      category_id=Category.objects.get(slug=self.kwargs['category_slug']),
+                                      subject_id=Subject.objects.get(slug=self.kwargs['slug']),
+                                      posted_by=True
+                                      ).select_related('section', 'category', 'subject')
 
 
 class ArticleList(ListView):
@@ -128,8 +129,7 @@ class ArticleDetail(DetailView):
         """Добавление дополнительного контекста к представлению статьии"""
         context = super().get_context_data(**kwargs)
         context['sections'] = self.kwargs['section_slug']
-        context['get_section_view'] = Section.objects.get(
-            slug=self.kwargs['section_slug'])
+        context['get_section_view'] = Section.objects.get(slug=self.kwargs['section_slug'])
         return context
 
 
@@ -219,11 +219,9 @@ class ArticleCreate(LoginRequiredMixin, CreateView):
             form_post = form_data.save(commit=False)
             form_post.slug = slugify(form_post.title)
             form_post.save()
-            messages.success(
-                request, 'Статья успешно добавлена, ожидайте подтверждения администратором сайта')
+            messages.success(request, 'Статья успешно добавлена, ожидайте подтверждения администратором сайта')
         else:
-            messages.success(
-                request, 'Ошибка добавления статьии, пожалуйста перепроверьте вводимые данные')
+            messages.success(request, 'Ошибка добавления статьии, пожалуйста перепроверьте вводимые данные')
         return redirect('add_article')
 
 
@@ -266,7 +264,8 @@ def feedback(request):
     if request.method == "POST":
         form = Feedback(request.POST)
         if form.is_valid():
-            mail = send_mail(form.cleaned_data['title'], form.cleaned_data['content'], 'TODO: Указать электронную почту отправителя',
+            mail = send_mail(form.cleaned_data['title'], form.cleaned_data['content'],
+                             'TODO: Указать электронную почту отправителя',
                              ['TODO: Указать электронные почты получателей', ], fail_silently=True)
             if mail:
                 messages.success(request, 'Письмо успешно отправлено')

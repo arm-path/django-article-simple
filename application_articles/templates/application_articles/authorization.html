@@ -11,11 +11,11 @@
                 <div class="form-group">
                     <div class="card-body">
                         {% for element in form %}
-                        <p>
-                            <label class="form_label" for="{{ element.id_for_label }}">{{ element.label }}</label>
-                            {{ element }}
-                            {{ element.errors }}
-                        </p>
+                            <p>
+                                <label class="form_label" for="{{ element.id_for_label }}">{{ element.label }}</label>
+                                {{ element }}
+                                {{ element.errors }}
+                            </p>
                         {% endfor %}
                     </div>
                     <div class="card-footer text-muted">
