@@ -202,7 +202,8 @@ venv/
 ENV/
 
 .static
-static/*
+static/
+STATIC/
 
 # Spyder project settings
 .spyderproject
@@ -215,4 +216,3 @@ static/*
 /site
 © 2022 GitHub, Inc.
 Terms
-/static/
